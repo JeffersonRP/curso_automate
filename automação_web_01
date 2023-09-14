@@ -1,0 +1,65 @@
+import pyautogui
+
+from time import sleep
+
+import webbrowser
+
+# Abre o site
+webbrowser.open('https://cursoautomacao.netlify.app/')
+
+# Para rolar o scroll para baixo
+sleep(2)
+pyautogui.click(1753,377, duration=1)
+pyautogui.scroll(-2250 )
+
+# para clicar e escrever meu nome
+sleep(1)
+pyautogui.click(1536,247, duration=1)
+
+pyautogui.typewrite("Jefferson")
+
+# clicar no botão de alerta
+sleep(1)
+pyautogui.click(1463,284, duration=1)
+
+# pressionar enter
+sleep(1)
+pyautogui.press('enter')
+
+# Descer
+sleep(1)
+pyautogui.scroll(-1340)
+
+# Baixar excel
+sleep(1)
+pyautogui.click(1526,211, duration=1)
+
+
+# clicar fora
+sleep(1)
+pyautogui.click(1814,871, duration=1)
+
+
+# Baixar pdf
+sleep(1)
+pyautogui.click(1534,326, duration=1)
+
+  # Escrever você terminou
+sleep(1)
+pyautogui.scroll(1340)
+
+
+# voltar e repetir ações do alerta e escrever terminou
+sleep(1)
+
+pyautogui.click(1536,247, duration=1)
+
+pyautogui.typewrite("Terminou")
+
+
+sleep(1)
+
+pyautogui.click(1463,284, duration=1)
+
+sleep(1)
+pyautogui.press('enter')
