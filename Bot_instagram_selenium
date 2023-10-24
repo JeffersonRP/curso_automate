@@ -1,0 +1,118 @@
+
+from selenium.common.exceptions import *
+from selenium.webdriver.support import expected_conditions as CondicaoExperada
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from time import sleep
+import pyautogui
+import webbrowser
+import pyperclip
+
+def iniciar_driver():
+    chrome_options = Options()
+    arguments = ['--lang=pt-BR', '--window-size=1300,1000']
+    for argument in arguments:
+        chrome_options.add_argument(argument)
+
+    chrome_options.add_experimental_option('prefs', {
+        'download.prompt_for_download': False,
+        'profile.default_content_setting_values.notifications': 2,
+        'profile.default_content_setting_values.automatic_downloads': 1,
+    })
+
+    driver = webdriver.Chrome(service=ChromeService(
+        ChromeDriverManager().install()), options=chrome_options)
+
+    wait = WebDriverWait(
+        driver,
+        10,
+        poll_frequency=1,
+        ignored_exceptions=[
+            NoSuchElementException,
+            ElementNotVisibleException,
+            ElementNotSelectableException,
+        ]
+    )
+    return driver, wait
+
+
+driver, wait = iniciar_driver()
+# Entrar no site do instagram
+url = 'https://www.instagram.com/'
+driver.get(url)
+
+sleep(2)
+# Clicar e digitar meu usuário
+user = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH, "//input[@name='username']")))
+sleep(2)
+user.send_keys("seu login")
+
+sleep(2)
+# Clicar e digitar minha senha 
+password = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH, "//input[@name='password']")))
+sleep(2)
+password.send_keys("sua senha")
+
+sleep(5)
+# Clicar no campo entrar
+entrar = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH, "//div[text()='Entrar']")))
+entrar.click()
+
+sleep(2)
+# fechar o pop up
+dizer_nao = wait.until(CondicaoExperada.element_to_be_clickable((By.XPATH, "//div[text()='Agora não']")))
+sleep(2)
+dizer_nao.click()
+
+while True:
+    # Navegar até a página alvo
+    url = 'https://www.instagram.com/b3_oficial/'
+    sleep(2)
+    driver.get(url)
+
+    sleep(2)
+    # Clicar na última  postagem
+    ultima_postagem = wait.until(CondicaoExperada.visibility_of_any_elements_located((By.XPATH, "//div[@class='_aagu']")))
+    sleep(2)
+    ultima_postagem[1].click()
+
+    sleep(2)
+    # Verificar se postagem foi curtida, caso não tenha sido, clicar curtir, caso já tenha sido, aguardar 24hrs
+    curtir = wait.until(CondicaoExperada.visibility_of_element_located((By.XPATH, "//span[@class='_aamw']")))
+    sleep(8)
+    curtir.click()
+
+    sleep(4)
+    pyautogui.hotkey('Alt Gr', 'a')
+    sleep(4)
+# Até aqui está tudo bem!
+    comentar = wait.until(CondicaoExperada.visibility_of_element_located((By.XPATH, "//span[@class='_aamx']")))
+    sleep(4)
+
+
+    comentar.click()
+
+    sleep(2)
+    texto = "Olá B3, esse é meu robozinho falando, vocês deveriam me deixar ajudá-los, sabe uma vaga não remunerada para aprender!"
+    pyperclip.copy(texto)
+    pyautogui.hotkey('ctrl', 'v')
+
+
+    publicar_button = wait.until(CondicaoExperada.visibility_of_element_located((By.XPATH, '//div[@class=" _am-5"]')))
+    publicar_button.click()
+
+
+
+    # pyautogui.typewrite("Olá B3, esse é meu robozinho falando, vocês deveriam me deixar ajuda-los, sabe uma vaga não remunerada para aprender!")
+    print('Acabou')
+    sleep(150)
+
+    # FUNCIONOU
+
+
+input('')
+driver.close()
